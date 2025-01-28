@@ -1,0 +1,15 @@
+FROM ubuntu:18.04
+
+RUN apt-get update && apt-get install -y netcat
+
+COPY libc-2.27.so /lib/custom_libc/libc-2.27.so
+
+COPY overfloat /overfloat
+
+RUN chmod +x /overfloat /lib/custom_libc/libc-2.27.so
+
+ENV LD_PRELOAD=/lib/custom_libc/libc-2.27.so
+
+EXPOSE 12345
+
+CMD ["nc", "-lvp", "12345", "-e", "/overfloat"]

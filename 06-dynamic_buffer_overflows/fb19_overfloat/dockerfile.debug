@@ -1,0 +1,13 @@
+FROM ubuntu:18.04
+RUN apt-get update && apt-get install -y \
+    gdb && \
+    apt-get clean
+
+COPY libc-2.27.so /lib/custom_libc/libc-2.27.so
+COPY overfloat /overfloat
+
+RUN chmod +x /overfloat /lib/custom_libc/libc-2.27.so
+
+ENV LD_PRELOAD=/lib/custom_libc/libc-2.27.so
+
+CMD ["gdb", "/overfloat"]
