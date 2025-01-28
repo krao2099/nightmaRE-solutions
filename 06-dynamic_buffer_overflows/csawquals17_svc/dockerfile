@@ -1,0 +1,15 @@
+FROM ubuntu:16.04
+
+RUN apt-get update && apt-get install -y netcat
+
+COPY libc-2.23.so /lib/custom_libc/libc-2.23.so
+
+COPY svc /svc
+
+RUN chmod +x /svc /lib/custom_libc/libc-2.23.so
+
+ENV LD_PRELOAD=/lib/custom_libc/libc-2.23.so
+
+EXPOSE 12345
+
+CMD ["nc", "-lvp", "12345", "-e", "/svc"]
