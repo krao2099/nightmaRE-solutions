@@ -1,0 +1,19 @@
+FROM ubuntu:18.04
+
+RUN dpkg --add-architecture i386
+
+RUN apt-get update && apt-get install -y libc6:i386 netcat
+
+COPY flag.txt /flag.txt
+
+COPY libc6_2.27-3ubuntu1_i386.so /lib/custom_libc/libc.so.6
+
+COPY server /server
+
+COPY run.sh /run.sh
+
+RUN chmod +x /server /lib/custom_libc/libc.so.6 run.sh
+
+EXPOSE 12345
+
+CMD ["nc", "-lvp", "12345", "-e", "/run.sh"]
