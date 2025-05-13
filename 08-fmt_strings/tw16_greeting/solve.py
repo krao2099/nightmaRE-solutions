@@ -1,7 +1,7 @@
 from pwn import *
 
 target = process('./greeting')
-gdb.attach(target, gdbscript = 'b *0x0804864f')
+# gdb.attach(target, gdbscript = 'b *0x0804864f')
 
 # objdump -D greeting | grep .fini_array
 fini_array_addr = 0x08049934
